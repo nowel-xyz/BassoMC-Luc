@@ -35,10 +35,9 @@ export default class TestThree extends Command {
 
     async Execute(interaction: ChatInputCommandInteraction): Promise<void> {
         let input = interaction.options.getString("string")
-        let db = this.client.conn
-
-        db.execute(`INSERT INTO data (username,message) VALUES (?,?);`, [interaction.user.username, input])
-        db.query(`SELECT * FROM data ORDER BY \`username\` ASC;`, function(err, results){
+        
+        this.client.database.execute(`INSERT INTO data (username,message) VALUES (?,?);`, [interaction.user.username, input])
+        this.client.database.query(`SELECT * FROM data ORDER BY \`username\` ASC;`, function(err, results){
             if (err) {
                 interaction.reply({ content: `:x: This example returned a error.`, flags: [MessageFlags.Ephemeral] })
                 throw err;

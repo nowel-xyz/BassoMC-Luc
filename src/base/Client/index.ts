@@ -14,7 +14,7 @@ export default class CustomClient extends Client implements IClient {
     public commands: Collection<string, Command>;
     public subCommands: Collection<string, SubCommand>;
     public cooldowns: Collection<string, Collection<string, number>>;
-    public conn: Connection;
+    public database: Connection;
 
     constructor() {
         super({ 
@@ -32,7 +32,7 @@ export default class CustomClient extends Client implements IClient {
         this.cooldowns = new Collection()
         this.config = require(`${process.cwd()}/data/config.json`)
         this.developmentMode = (process.argv.slice(2).includes("--development"))
-        this.conn = mysql.createConnection({
+        this.database = mysql.createConnection({
             host: process.env.MYSQL_HOST,
             user: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,
@@ -44,7 +44,13 @@ export default class CustomClient extends Client implements IClient {
         console.log(`Starting the bot in ${this.developmentMode ? "development" : "production"}`)
 
         try {
-            this.conn.execute("CREATE TABLE IF NOT EXISTS data (id int AUTO_INCREMENT PRIMARY KEY NULL, username VARCHAR(255) NULL, message VARCHAR(255) NULL);");
+            this.database.execute(`
+                CREATE TABLE IF NOT EXISTS data (
+                    id INT AUTO_INCREMENT PRIMARY KEY, 
+                    username VARCHAR(255) NULL, 
+                    message VARCHAR(255) NULL
+                );
+            `);        
         } catch (error) {
             console.error(`[MySQL] - Error while creating database table!\n${error}`);
         }
