@@ -35,20 +35,17 @@ export default class TestThree extends Command {
 
     async Execute(interaction: ChatInputCommandInteraction): Promise<void> {
         let input = interaction.options.getString("string")
-        let conn = new CustomClient().conn;
+        let db = this.client.conn
 
-        conn.execute(`INSERT INTO data (username,message) VALUES (?,?);`, [interaction.user.username, input])
-        const awns = await conn.query<data[]>(
-            `SELECT * FROM data ORDER BY \`name\` ASC;`
-        );
+        db.execute(`INSERT INTO data (username,message) VALUES (?,?);`, [interaction.user.username, input])
+        db.query(`SELECT * FROM data ORDER BY \`username\` ASC;`, function(err, results){
+            if (err) {
+                interaction.reply({ content: `:x: This example returned a error.`, flags: [MessageFlags.Ephemeral] })
+                throw err;
+            }
 
-        interaction.reply({ content: `Fetched messages successfully!`, flags: [MessageFlags.Ephemeral] })
-
-        for (const row in awns) {
-            interaction.followUp({ content: ` * ${row}`})
-        }
-
-        conn.end();
+            interaction.reply({ content: `${JSON.stringify(results)}` })
+        });
     }
 }
 
