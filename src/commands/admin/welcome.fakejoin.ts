@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, MessageFlags } from "discord.js";
+import { ChatInputCommandInteraction, Client, EmbedBuilder, MessageFlags } from "discord.js";
 import CustomClient from "../../base/Client";
 import SubCommand from "../../base/Client/SubCommand";
 import { RowDataPacket } from "mysql2";
@@ -33,11 +33,11 @@ export default class FakeJoin extends SubCommand {
 
         this.client.database.query<RowDataPacket[]>(`SELECT * FROM welcome WHERE guildid = ? AND id = (SELECT MAX(id) AS id FROM welcome WHERE guildid = ?)`, [interaction.guild?.id, interaction.guild?.id], function(err, results, fields){
             if (err) {
-                interaction.reply({ content: `:x: Something went wrong! Try again later.`, flags: [MessageFlags.Ephemeral] })
+                interaction.reply({ embeds: [new EmbedBuilder().setColor('Red').setDescription(`:x: Something went wrong! Try again later.`)], flags: [MessageFlags.Ephemeral] })
                 throw err;
             }
             if (JSON.stringify(results) == "[]") {
-                return interaction.reply({ content: `:x: You don't seem to have a welcome message setup. Please set one up using /welcome set!`, flags: [MessageFlags.Ephemeral] })
+                return interaction.reply({ embeds: [new EmbedBuilder().setColor('Red').setDescription(`:x: You don't seem to have a welcome message setup. Please set one up using /welcome set!`)], flags: [MessageFlags.Ephemeral] })
             }
 
             if (interaction.guild != null) {
