@@ -47,9 +47,3 @@ export default class TestThree extends Command {
         });
     }
 }
-
-interface data extends RowDataPacket {
-    id: number,
-    username: string,
-    message: string
-}

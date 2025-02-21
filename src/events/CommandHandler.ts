@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Collection, EmbedBuilder, Events } from "discord.js";
+import { ChatInputCommandInteraction, Collection, EmbedBuilder, Events, MessageFlags } from "discord.js";
 import CustomClient from "../base/Client";
 import Event from "../base/Client/Event";
 import Command from "../base/Client/Command";
@@ -20,7 +20,7 @@ export default class CommandHandler extends Event {
         const command: Command = this.client.commands.get(interaction.commandName)!;
 
         
-        if(!command) return await interaction.reply({ content: "This command dose not exit!", ephemeral: true }) && this.client.commands.delete(interaction.commandName)
+        if(!command) return await interaction.reply({ content: "This command does not exit!", flags: [MessageFlags.Ephemeral] }) && this.client.commands.delete(interaction.commandName)
 
         if(command.dev && !this.client.config.developerUserIds.includes(interaction.user.id))
             return interaction.reply({ embeds: [new EmbedBuilder()
