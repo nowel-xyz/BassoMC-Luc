@@ -82,7 +82,7 @@ export default class WelcomeSET extends SubCommand {
                         ?,
                         ?
                     );
-                `, [interaction.guild?.id.toString(), interaction.options.getChannel("channel")?.id.toString(), interaction.options.getString("title"), interaction.options.getString("message"), interaction.options.getBoolean("embed"), interaction.options.getString("color"), interaction.options.getBoolean("timestamp"), interaction.options.getString("footer"), interaction.options.getBoolean("footer_pfp"), interaction.options.getString("image_url"), interaction.options.getString("thumbnail_url")])
+                `, [interaction.guild?.id.toString(), interaction.options.getChannel("channel")?.id.toString(), interaction.options.getString("title"), interaction.options.getString("message"), interaction.options.getBoolean("embed"), interaction.options.getString("color"), interaction.options.getBoolean("timestamp"), interaction.options.getString("footer"), interaction.options.getBoolean("footer_pfp"), interaction.options.getString("image"), interaction.options.getString("thumbnail")])
 
                 await interaction.reply({ content: `Successfully set a welcome message for ${interaction.options.getChannel("channel")}! Here's how I will be sending welcome messages from now on:`, embeds: [welcEmb] });
             } else {
